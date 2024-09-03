@@ -54,6 +54,11 @@ else
     get_token
 fi
 
+sudo cp pr-status.sh $SCRIPTDIR || { echo "Cannot move new script to run location"; exit 1;  }
+sudo chmod +x $SCRIPTDIR/pr-status.sh || { echo "Cannot set script executable"; exit 1;  }
+
+touch $STATUSFILE
+
 mkdir -p $SYSTEMDDIR || { echo "Cannot make systemd dir: $SYSTEMDDIR"; exit 1; }
 cp pr-status.service $SYSTEMDDIR || { echo "Cannot move systemd file"; exit 1;  }
 systemctl --user daemon-reload || { echo "Cannot reload systemd"; exit 1;  }
@@ -61,8 +66,3 @@ systemctl --user enable pr-status.service || { echo "Cannot enable systemd servi
 systemctl --user start pr-status.service || { echo "Cannot start systemd service"; exit 1;  }
 systemctl --user restart pr-status.service || { echo "Cannot restart systemd service"; exit 1;  }
 echo "Service is ... $(systemctl --user is-enabled pr-status.service)"
-
-sudo cp pr-status.sh $SCRIPTDIR || { echo "Cannot move new script to run location"; exit 1;  }
-sudo chmod +x $SCRIPTDIR/pr-status.sh || { echo "Cannot set script executable"; exit 1;  }
-
-touch $STATUSFILE
