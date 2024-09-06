@@ -46,7 +46,7 @@ do
     fi
 
     STATUS=$(cat $STATUSFILE)
-    if [ $STATUSFILE -ne "PASS" ]; then
+    if [ $STATUSFILE != "PASS" ]; then
         notify-send "PR Status" "All PRs are now passing 🎉"
     fi
 
