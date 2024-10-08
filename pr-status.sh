@@ -32,7 +32,7 @@ do
     if [ $TOTAL_FAILS -ne 0 ]; then
         notify-send "PR Status" "You have $TOTAL_FAILS failing PR(s)"
         echo "FAIL" > $STATUSFILE
-        sleep 300
+        sleep 60
         continue
     fi
 
@@ -46,7 +46,7 @@ do
     fi
 
     STATUS=$(cat $STATUSFILE)
-    if [ $STATUSFILE != "PASS" ]; then
+    if [ $STATUS != "PASS" ]; then
         notify-send "PR Status" "All PRs are now passing 🎉"
     fi
 
