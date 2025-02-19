@@ -5,7 +5,7 @@ CONFFILE=~/.config/github.conf
 
 TOKEN=$(cat $CONFFILE)|| { echo "Cannot read $CONFFILE"; exit 1;  }
 Q_FAIL="is:pr+state:open+author:@me+status:failure"
-Q_PROGRESS="is:pr+state:open+author:@me+status:pending"
+Q_PROGRESS="is:pr+state:open+author:@me+status:pending+draft:false"
 
 github_query() {
     local QUERY="$1"
@@ -18,8 +18,8 @@ github_query() {
 
     CURL_CMD_STATUS=$?
     if [ $CURL_CMD_STATUS -ne 0 ]; then
-        systemd-notify STATUS="Curl failed with status $CURL_CMD_STATUS"
-        systemd-notify STATUS="Check your github token. You can update this by running the install.sh script"
+        systemd-cat echo "Curl failed with status $CURL_CMD_STATUS"
+        systemd-cat echo "Check your github token. You can update this by running the install.sh script"
         exit 1;
     fi
     echo $CURL_RESPONSE
@@ -47,7 +47,7 @@ do
 
     STATUS=$(cat $STATUSFILE)
     if [ $STATUS != "PASS" ]; then
-        notify-send "PR Status" "All PRs are now passing 🎉"
+        notify-send "PR Status" "All PRs are now passing ?"
     fi
 
     echo "PASS" > $STATUSFILE
